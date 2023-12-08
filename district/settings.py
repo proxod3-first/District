@@ -82,28 +82,76 @@ TEMPLATES = [
 WSGI_APPLICATION = 'district.wsgi.application'
 
 
-# Database
+
+# Database Settings
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
+DATABASES = None
+POSTGRES_DB = True
+LOCAL_DB = False
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'my_db',
-        'USER': 'postgres',
-        'PASSWORD': '11021977',
-        'HOST': 'localhost',
-        'PORT': '5432',
+if POSTGRES_DB:
+    if LOCAL_DB:
+        print("Database Postgress in Local is available.")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'my_db',
+                'USER': 'postgres',
+                'PASSWORD': '11021977',
+                'HOST': 'localhost',
+                'PORT': 5432,
+            }
+        }
+    else: 
+        print("Database Postgress in Docker is available.")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'new_db',
+                'USER': 'postgres',
+                'PASSWORD': 'postgres',
+                'HOST': 'db',
+                'PORT': 5432,
+            }
+        }
+else:
+    print("Database SQLite3 is available.")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
+
+
+# Redis Settings
+
+REDIS_AVAILABLE = True
+
+if REDIS_AVAILABLE:
+    print("Redis is available using Docker.")
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [(
+                    'redis',
+                    6379
+                )],
+            },
+        },
+    }
+else:
+    print("Redis is not available using Docker. Using InMemoryChannelLayer.")
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+       }
+    }
+    
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -157,7 +205,14 @@ MEDIA_ROOT = BASE_DIR / 'static/images'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 CORS_ALLOW_ALL_ORIGINS = True
 
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+DJANGO_HTTPS_SECURITY = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
 CSRF_COOKIE_NAME = "csrftoken"
+SECURE_HSTS_SECONDS = 31536000
+SESSION_COOKIE_AGE = 2592000
