@@ -7,7 +7,14 @@ from django.contrib.auth import authenticate, login, logout
 from .models import Room, Topic, Message, User
 from .forms import RoomForm, UserForm, MyUserCreationForm
 
-# Create your views here.
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.views.decorators.cache import cache_page
+from django.conf import settings
+
+
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+
+
 
 # rooms = [
 #     {'id': 1, 'name': 'Lets learn python!'},
@@ -16,6 +23,7 @@ from .forms import RoomForm, UserForm, MyUserCreationForm
 # ]
 
 
+@cache_page(CACHE_TTL)
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -42,11 +50,13 @@ def loginPage(request):
     return render(request, 'base/login_register.html', context)
 
 
+@cache_page(CACHE_TTL)
 def logoutUser(request):
     logout(request)
     return redirect('home')
 
 
+@cache_page(CACHE_TTL)
 def registerPage(request):
     form = MyUserCreationForm()
 
@@ -64,6 +74,7 @@ def registerPage(request):
     return render(request, 'base/login_register.html', {'form': form})
 
 
+@cache_page(CACHE_TTL)
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
 
@@ -83,6 +94,7 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
+@cache_page(CACHE_TTL)
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
@@ -102,6 +114,7 @@ def room(request, pk):
     return render(request, 'base/room.html', context)
 
 
+@cache_page(CACHE_TTL)
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
     rooms = user.room_set.all()
@@ -112,6 +125,7 @@ def userProfile(request, pk):
     return render(request, 'base/profile.html', context)
 
 
+@cache_page(CACHE_TTL)
 @login_required(login_url='login')
 def createRoom(request):
     form = RoomForm()
@@ -132,6 +146,7 @@ def createRoom(request):
     return render(request, 'base/room_form.html', context)
 
 
+@cache_page(CACHE_TTL)
 @login_required(login_url='login')
 def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
@@ -153,6 +168,7 @@ def updateRoom(request, pk):
     return render(request, 'base/room_form.html', context)
 
 
+@cache_page(CACHE_TTL)
 @login_required(login_url='login')
 def deleteRoom(request, pk):
     room = Room.objects.get(id=pk)
@@ -166,6 +182,7 @@ def deleteRoom(request, pk):
     return render(request, 'base/delete.html', {'obj': room})
 
 
+@cache_page(CACHE_TTL)
 @login_required(login_url='login')
 def deleteMessage(request, pk):
     message = Message.objects.get(id=pk)
@@ -179,6 +196,7 @@ def deleteMessage(request, pk):
     return render(request, 'base/delete.html', {'obj': message})
 
 
+@cache_page(CACHE_TTL)
 @login_required(login_url='login')
 def updateUser(request):
     user = request.user
@@ -193,6 +211,7 @@ def updateUser(request):
     return render(request, 'base/update-user.html', {'form': form})
 
 
+@cache_page(CACHE_TTL)
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     topics = Topic.objects.filter(name__icontains=q)

@@ -18,8 +18,8 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.name
-
-
+    
+    
 class Room(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
@@ -36,7 +36,7 @@ class Room(models.Model):
     def __str__(self):
         return self.name
 
-
+    
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
