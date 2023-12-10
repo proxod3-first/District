@@ -179,6 +179,7 @@ def deleteRoom(request, pk):
     if request.method == 'POST':
         room.delete()
         return redirect('home')
+    
     return render(request, 'base/delete.html', {'obj': room})
 
 

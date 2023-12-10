@@ -34,9 +34,8 @@ class TopicsPageTest(TestCase):
             [repr(self.topic1), repr(self.topic2)],
             ordered=False
         )
-
-
-
+        
+        
 class LogoutUserViewTest(TestCase):
 
     def setUp(self):
