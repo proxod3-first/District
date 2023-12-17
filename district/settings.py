@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'base.apps.BaseConfig',
     
+    'django_extensions',
     'rest_framework_simplejwt',
     'rest_framework',
     "corsheaders",
@@ -51,9 +52,7 @@ AUTH_USER_MODEL = 'base.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
     "corsheaders.middleware.CorsMiddleware",
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

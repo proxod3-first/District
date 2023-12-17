@@ -1,0 +1,9 @@
+# Generate graphiz class diagram 
+python manage.py graph_models -a --dot -o classDiagram.dot
+
+
+# Visual this .dot file on https://dreampuf.github.io/GraphvizOnline/
+
+
+# Generate firstly poetry files, then requirements.txt
+python poetry-convert.py

@@ -1,5 +1,4 @@
 {% extends 'main.html' %}
-
 {% block content %}
 <main class="update-account layout">
   <div class="container">
@@ -27,10 +26,9 @@
             {{field}}
           </div>
           {% endfor %}
-
-
           <div class="form__action">
-            <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>            <button class="btn btn--main" type="submit">Update</button>
+            <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>            
+            <button class="btn btn--main" type="submit">Update</button>
           </div>
         </form>
       </div>
