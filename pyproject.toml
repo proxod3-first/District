@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "district"
 version = "0.1"
-description = "District_Web_App"
+description = "Desc"
 authors = ["proxod3-first"]
+license = "No"
 readme = "README.md"
 
 [tool.poetry.dependencies]

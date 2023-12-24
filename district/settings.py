@@ -14,6 +14,7 @@ from datetime import timedelta
 from pathlib import Path
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,7 +43,6 @@ INSTALLED_APPS = [
 
     'base.apps.BaseConfig',
     
-    'django_extensions',
     'rest_framework_simplejwt',
     'rest_framework',
     "corsheaders",
@@ -279,6 +279,5 @@ DJANGO_HTTPS_SECURITY = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False
-CSRF_COOKIE_NAME = "csrftoken"
 SECURE_HSTS_SECONDS = 31536000
 SESSION_COOKIE_AGE = 2592000

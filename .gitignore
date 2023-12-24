@@ -140,3 +140,7 @@ dmypy.json
 cython_debug/
 
 media/
+
+poetry-convert.py
+
+poetry-convert.py

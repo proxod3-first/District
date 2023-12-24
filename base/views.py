@@ -12,6 +12,14 @@ from django.views.decorators.cache import cache_page
 from django.conf import settings
 
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import authentication_classes, permission_classes
+
+
+
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
@@ -23,7 +31,6 @@ CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 # ]
 
 
-@cache_page(CACHE_TTL)
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -50,13 +57,13 @@ def loginPage(request):
     return render(request, 'base/login_register.html', context)
 
 
-@cache_page(CACHE_TTL)
+
 def logoutUser(request):
     logout(request)
     return redirect('home')
 
 
-@cache_page(CACHE_TTL)
+
 def registerPage(request):
     form = MyUserCreationForm()
 
@@ -74,7 +81,7 @@ def registerPage(request):
     return render(request, 'base/login_register.html', {'form': form})
 
 
-@cache_page(CACHE_TTL)
+
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
 
@@ -94,7 +101,9 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
-@cache_page(CACHE_TTL)
+@login_required(login_url='login')
+@authentication_classes([SessionAuthentication, JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
@@ -114,7 +123,9 @@ def room(request, pk):
     return render(request, 'base/room.html', context)
 
 
-@cache_page(CACHE_TTL)
+@login_required(login_url='login')
+@authentication_classes([SessionAuthentication, JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
     rooms = user.room_set.all()
@@ -125,8 +136,10 @@ def userProfile(request, pk):
     return render(request, 'base/profile.html', context)
 
 
-@cache_page(CACHE_TTL)
+
 @login_required(login_url='login')
+@authentication_classes([SessionAuthentication, JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def createRoom(request):
     form = RoomForm()
     topics = Topic.objects.all()
@@ -146,7 +159,7 @@ def createRoom(request):
     return render(request, 'base/room_form.html', context)
 
 
-@cache_page(CACHE_TTL)
+
 @login_required(login_url='login')
 def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
@@ -168,8 +181,10 @@ def updateRoom(request, pk):
     return render(request, 'base/room_form.html', context)
 
 
-@cache_page(CACHE_TTL)
+
 @login_required(login_url='login')
+@authentication_classes([SessionAuthentication, JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def deleteRoom(request, pk):
     room = Room.objects.get(id=pk)
 
@@ -183,8 +198,10 @@ def deleteRoom(request, pk):
     return render(request, 'base/delete.html', {'obj': room})
 
 
-@cache_page(CACHE_TTL)
+
 @login_required(login_url='login')
+@authentication_classes([SessionAuthentication, JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def deleteMessage(request, pk):
     message = Message.objects.get(id=pk)
 
@@ -197,8 +214,10 @@ def deleteMessage(request, pk):
     return render(request, 'base/delete.html', {'obj': message})
 
 
-@cache_page(CACHE_TTL)
+
 @login_required(login_url='login')
+@authentication_classes([SessionAuthentication, JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def updateUser(request):
     user = request.user
     form = UserForm(instance=user)
@@ -212,7 +231,6 @@ def updateUser(request):
     return render(request, 'base/update-user.html', {'form': form})
 
 
-@cache_page(CACHE_TTL)
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     topics = Topic.objects.filter(name__icontains=q)
