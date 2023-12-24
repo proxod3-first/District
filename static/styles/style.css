@@ -1041,6 +1041,12 @@ a {
   margin: 1rem 0;
 }
 
+.room__details{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0;
+}
+
 .room__conversation {
   margin-top: 1rem;
   margin-bottom: 4rem;

@@ -25,14 +25,14 @@
         <div class="profile__about">
           <h3>About</h3>
           <p>
-            {{user.bio}}
+            {{user.bio|default:""}}
           </p>
         </div>
       </div>
 
       <div class="roomList__header">
         <div>
-          <h2>Rooms Hosted by Sergey Prokhodtsev</a>
+          <h2>Rooms Hosted by {{user.name}}</a>
           </h2>
         </div>
       </div>
